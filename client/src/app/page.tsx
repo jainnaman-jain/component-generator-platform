@@ -18,7 +18,6 @@ interface Session {
   title: string;
   chatHistory: Message[];
   createdAt: string;
-  // CHANGED: 'code' is now 'codeHistory' to store all versions
   codeHistory: CodeState[]; 
 }
 
@@ -65,7 +64,8 @@ export default function DashboardPage() {
   useEffect(() => {
     const fetchSessions = async () => {
       const token = Cookies.get('authToken');
-      const response = await fetch('http://localhost:5000/api/sessions', {
+      const apiUrl = `${process.env.NEXT_PUBLIC_API_URL}/api/sessions`;
+      const response = await fetch(apiUrl, {
         headers: { 'Authorization': `Bearer ${token}` },
       });
       if (response.ok) {
@@ -90,7 +90,6 @@ export default function DashboardPage() {
     const validMessages = (session.chatHistory || []).filter(msg => msg && msg._id);
     setMessages(validMessages);
     
-    // CHANGED: Load the entire code history from the session
     const loadedHistory = session.codeHistory && session.codeHistory.length > 0 
       ? session.codeHistory 
       : [{ jsx: '', css: '' }];
@@ -101,7 +100,8 @@ export default function DashboardPage() {
   
   const handleNewSession = async () => {
     const token = Cookies.get('authToken');
-    const response = await fetch('http://localhost:5000/api/sessions', {
+    const apiUrl = `${process.env.NEXT_PUBLIC_API_URL}/api/sessions`;
+    const response = await fetch(apiUrl, {
       method: 'POST',
       headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
       body: JSON.stringify({ title: 'Untitled Session' }),
@@ -124,7 +124,8 @@ export default function DashboardPage() {
     
     try {
       const token = Cookies.get('authToken');
-      const response = await fetch(`http://localhost:5000/api/ai/generate`, {
+      const apiUrl = `${process.env.NEXT_PUBLIC_API_URL}/api/ai/generate`;
+      const response = await fetch(apiUrl, {
         method: 'POST',
         headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
         body: JSON.stringify({ 
@@ -146,9 +147,9 @@ export default function DashboardPage() {
       setCodeHistory(updatedHistory);
       setHistoryIndex(updatedHistory.length - 1);
       
-      // CHANGED: Now saves the entire history array to the backend
       if (activeSessionId) {
-        await fetch(`http://localhost:5000/api/sessions/${activeSessionId}`, {
+        const apiUrl = `${process.env.NEXT_PUBLIC_API_URL}/api/sessions/${activeSessionId}`;
+        await fetch(apiUrl, {
           method: 'PUT',
           headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
           body: JSON.stringify({ codeHistory: updatedHistory })

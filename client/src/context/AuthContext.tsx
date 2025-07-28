@@ -11,15 +11,15 @@ interface AuthContextType {
   logout: () => void;
 }
 
-// Create the context with a default undefined value
+// Creates the context with a default undefined value
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-// Create the provider component
+// Creates the provider component
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const router = useRouter();
 
-  // Check for an auth token in cookies when the app loads
+  // Checks for an auth token in cookies when the app loads
   useEffect(() => {
     const token = Cookies.get('authToken');
     if (token) {
@@ -47,7 +47,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   );
 }
 
-// Create a custom hook for easy access to the context
+// Creates a custom hook for easy access to the context
 export function useAuth() {
   const context = useContext(AuthContext);
   if (context === undefined) {
