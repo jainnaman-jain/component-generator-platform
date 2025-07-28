@@ -15,7 +15,7 @@ const app = express();
 // We now define a list of allowed URLs (origins)
 const allowedOrigins = [
   'http://localhost:3000', // For local development
-  // We will add your Vercel URL here later once we have it
+  'https://component-generator-platform-one.vercel.app/'
 ];
 
 const corsOptions = {
