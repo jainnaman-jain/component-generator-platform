@@ -64,7 +64,7 @@ export default function DashboardPage() {
   useEffect(() => {
     const fetchSessions = async () => {
       const token = Cookies.get('authToken');
-      const apiUrl = `${process.env.NEXT_PUBLIC_API_URL}/api/sessions`;
+      const apiUrl = `${process.env.NEXT_PUBLIC_API_URL}api/sessions`;
       const response = await fetch(apiUrl, {
         headers: { 'Authorization': `Bearer ${token}` },
       });
@@ -100,7 +100,7 @@ export default function DashboardPage() {
   
   const handleNewSession = async () => {
     const token = Cookies.get('authToken');
-    const apiUrl = `${process.env.NEXT_PUBLIC_API_URL}/api/sessions`;
+    const apiUrl = `${process.env.NEXT_PUBLIC_API_URL}api/sessions`;
     const response = await fetch(apiUrl, {
       method: 'POST',
       headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
@@ -124,7 +124,7 @@ export default function DashboardPage() {
     
     try {
       const token = Cookies.get('authToken');
-      const apiUrl = `${process.env.NEXT_PUBLIC_API_URL}/api/ai/generate`;
+      const apiUrl = `${process.env.NEXT_PUBLIC_API_URL}api/ai/generate`;
       const response = await fetch(apiUrl, {
         method: 'POST',
         headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
@@ -148,7 +148,7 @@ export default function DashboardPage() {
       setHistoryIndex(updatedHistory.length - 1);
       
       if (activeSessionId) {
-        const apiUrl = `${process.env.NEXT_PUBLIC_API_URL}/api/sessions/${activeSessionId}`;
+        const apiUrl = `${process.env.NEXT_PUBLIC_API_URL}api/sessions/${activeSessionId}`;
         await fetch(apiUrl, {
           method: 'PUT',
           headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },

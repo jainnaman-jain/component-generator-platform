@@ -18,7 +18,7 @@ export default function SignupPage() {
     setIsLoading(true);
 
     try {
-      const apiUrl = `${process.env.NEXT_PUBLIC_API_URL}/api/auth/signup`;
+      const apiUrl = `${process.env.NEXT_PUBLIC_API_URL}api/auth/signup`;
       const response = await fetch(apiUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
