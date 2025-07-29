@@ -11,27 +11,25 @@ const chatRoutes = require('./routes/chatRoutes');
 
 const app = express();
 
-// --- THIS IS THE CRUCIAL CHANGE FOR DEPLOYMENT ---
-// We now define a list of allowed URLs (origins)
+
+
 const allowedOrigins = [
   'http://localhost:3000', // For local development
-  'https://component-generator-platform-one.vercel.app/'
+  'https://component-generator-platform-one.vercel.app' // live frontend URL
 ];
 
 const corsOptions = {
   origin: function (origin, callback) {
-    // Allow requests with no origin (like mobile apps or curl requests)
-    if (!origin) return callback(null, true);
-    if (allowedOrigins.indexOf(origin) === -1) {
-      const msg = 'The CORS policy for this site does not allow access from the specified Origin.';
-      return callback(new Error(msg), false);
+    if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
     }
-    return callback(null, true);
   },
   credentials: true,
 };
 
-// Use the new, more flexible CORS options
+
 app.use(cors(corsOptions));
 
 app.use(express.json());
@@ -44,7 +42,6 @@ app.use('/api/sessions', sessionRoutes);
 app.use('/api/chat', chatRoutes);
 app.use("/api/ai", aiRoutes);
 
-// Make sure your server starts on the port provided by Render, with a fallback for local dev
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
